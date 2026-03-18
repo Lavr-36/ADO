@@ -28,7 +28,7 @@ namespace ADO
             Console.WriteLine();
             while (reader.Read())
             {
-                //Console.WriteLine($"{reader[0]}\t{reader[1]}\t{reader[2]}\t{reader[3]}");
+                 //Console.WriteLine($"{reader[0]}\t{reader[1]}\t{reader[2]}\t{reader[3]}");
                 for (int i = 0; i < reader.FieldCount; i++)
                     Console.Write($"{(reader[i])}\t");
                 Console.WriteLine();
