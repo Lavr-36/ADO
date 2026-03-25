@@ -5,18 +5,25 @@ using System.Linq;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using System.Configuration;
 
 namespace DLLtest
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Connector connector = new Connector("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Movies_PV_521;" +
-                "Integrated Security=True;Connect Timeout=3;Encrypt=False;TrustServerCertificate=False;" +
-                "ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+            Connector connector = new Connector
+                (
+                ConfigurationManager.ConnectionStrings["Movies_PV_521"].ConnectionString
+                );
             connector.Select("SELECT * FROM Directors");
+
+            Connector academy_connector = new Connector
+                (
+                ConfigurationManager.ConnectionStrings["PV_521_Import"].ConnectionString
+                );
+            academy_connector.Select("SELECT * FROM Disciplines");
         }
     }
 }
