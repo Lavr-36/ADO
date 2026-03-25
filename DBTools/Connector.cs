@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 
-namespace ADO
+namespace DBTools
 {
-    class Connector
+    public class Connector
     {
         string connection_string;
         SqlConnection connection;

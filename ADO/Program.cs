@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 
 namespace ADO
 {
@@ -17,8 +18,20 @@ namespace ADO
                 "Integrated Security=True;Connect Timeout=3;Encrypt=False;TrustServerCertificate=False;" +
                 "ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             Connector connector = new Connector(connection_string);
-            connector.Insert("INSERT Directors (first_name,last_name) VALUES (N'Guy', N'Richie');");
+            Console.WriteLine(connector.GetPrimaryKeyColumnName("Directors"));
+            Console.WriteLine(connector.GetPrimaryKeyColumnName("Movies"));
+
+            //connector.Insert($@"INSERT Directors (director_id,first_name,last_name) VALUES ({connector.GetNextPrimaryKey("Directors")},N'Guy', N'Richie');");
+            connector.Insert
+                (
+                "Directors",
+                "director_id,first_name,last_name",
+                $"{connector.GetNextPrimaryKey("Directors")},John,Singleton"
+                );
+
+
             Console.WriteLine($"PK Max:\t{connector.GetMaxPrimaryKey("Directors")}");
+            
             //string cmd = "SELECT movie_id,title,release_date,first_name,last_name FROM Movies,Directors WHERE director=director_id";
             //connector.Select(cmd);
             connector.Select("*", "Directors");
