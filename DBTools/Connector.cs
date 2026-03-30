@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
+
+using System.Data;
+using System.Data.SqlClient;
 
 namespace DBtools
 {
@@ -57,12 +56,13 @@ namespace DBtools
             cmd += ";";
             return Select(cmd);
         }
-        public Dictionary<string, int> GetDictionary(string table)
+        public Dictionary<string, int> GetDictionary(string table, string condition = "")
         {
             Dictionary<string, int> dictionary = new Dictionary<string, int>();
             string cmd =
-            $"SELECT {table.Substring(0, table.Length - 1)}_name,{table.Substring(0, table.Length - 1)}_id FROM {table}";
-    SqlCommand command = new SqlCommand(cmd, connection);
+$"SELECT {table.Substring(0, table.Length - 1)}_name,{table.Substring(0, table.Length - 1)}_id FROM {table}";
+            if (condition != "") cmd += $" WHERE {condition}";
+            SqlCommand command = new SqlCommand(cmd, connection);
             connection.Open();
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
