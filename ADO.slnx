@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Academy/Academy.csproj" Id="6da88edc-1f26-44ad-8fcf-b8d1d30d0ffa" />
   <Project Path="ADO/ADO.csproj" Id="64ed9bf1-8892-488d-bd03-bb450104e89b" />
   <Project Path="DBTools/DBTools.csproj" Id="c632cbbd-755a-42fe-b4f2-67c936376271" />
   <Project Path="DLLtest/DLLtest.csproj" Id="352db65d-6718-4a0f-adc8-3e53c461b947" />

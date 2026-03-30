@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Runtime.InteropServices;
+using System.Xml.Linq;
 
-namespace DBTools
+namespace DBtools
 {
     public class Connector
     {
@@ -19,31 +21,57 @@ namespace DBTools
             this.connection_string = connection_string;
             connection = new SqlConnection(connection_string);
         }
-        public void Select(string cmd)
+        public DataTable Select(string cmd)
         {
+            DataTable table = new DataTable();
             connection.Open();
             SqlCommand command = new SqlCommand(cmd, connection);
 
             SqlDataReader reader = command.ExecuteReader();
             for (int i = 0; i < reader.FieldCount; i++)
+            {
                 Console.Write(reader.GetName(i) + "\t");
+                table.Columns.Add(reader.GetName(i));
+            }
             Console.WriteLine();
             while (reader.Read())
             {
+                DataRow row = table.NewRow();
                 //Console.WriteLine($"{reader[0]}\t{reader[1]}\t{reader[2]}\t{reader[3]}");
                 for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    row[i] = reader[i];
                     Console.Write($"{reader[i]}\t\t");
+                }
                 Console.WriteLine();
+                table.Rows.Add(row);
             }
             reader.Close();
             connection.Close();
+            return table;
         }
-        public void Select(string fields, string tables, string condition = "")
+        public DataTable Select(string fields, string tables, string condition = "")
         {
             string cmd = $"SELECT {fields} FROM {tables}";
             if (condition != "") cmd += $" WHERE {condition}";
             cmd += ";";
-            Select(cmd);
+            return Select(cmd);
+        }
+        public Dictionary<string, int> GetDictionary(string table)
+        {
+            Dictionary<string, int> dictionary = new Dictionary<string, int>();
+            string cmd =
+            $"SELECT {table.Substring(0, table.Length - 1)}_name,{table.Substring(0, table.Length - 1)}_id FROM {table}";
+    SqlCommand command = new SqlCommand(cmd, connection);
+            connection.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                dictionary.Add(reader[0].ToString(), Convert.ToInt32(reader[1]));
+            }
+            reader.Close();
+            connection.Close();
+            return dictionary;
         }
         public object Scalar(string cmd)
         {
@@ -51,7 +79,7 @@ namespace DBTools
             connection.Open();
 
             SqlCommand command = new SqlCommand(cmd, connection);
-            result = command.ExecuteScalar();
+            result = command.ExecuteScalar();   //Выполнение скалярного запроса.
 
             connection.Close();
             return result;
@@ -73,10 +101,10 @@ namespace DBTools
         }
         public string GetPrimaryKeyColumnName(string table)
         {
-            string raw = @"RAW string";
-            string cmd = $@"SELECT INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME
+            string raw = @"RAW string"; //RAW-строка игнорирует переносы
+            string cmd = $@"SELECT	INFORMATION_SCHEMA.KEY_COLUMN_USAGE.COLUMN_NAME
 FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-WHERE TABLE_NAME = N'{table}'
+WHERE   TABLE_NAME = N'{table}'
 AND CONSTRAINT_NAME LIKE N'PK_%'";
             return (string)Scalar(cmd);
         }
@@ -115,8 +143,8 @@ AND CONSTRAINT_NAME LIKE N'PK_%'";
                     condition += "AND";
                     parsed_values += ",";
                 }
-            }
 
+            }
             string cmd = $"IF NOT EXISTS (SELECT {GetPrimaryKeyColumnName(table)} FROM {table} WHERE {condition})";
             cmd += $"INSERT {table}({fields}) VALUES ({parsed_values})";
             Insert(cmd);
