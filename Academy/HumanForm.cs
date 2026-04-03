@@ -10,11 +10,14 @@ using System.Windows.Forms;
 
 namespace Academy
 {
-    public partial class HumanForm : Form
+    public abstract partial class HumanForm : Form
     {
+        protected DBtools.Connector connector;
         public HumanForm()
         {
             InitializeComponent();
         }
+
+        protected abstract void buttonOK_Click(object sender, EventArgs e);
     }
 }
