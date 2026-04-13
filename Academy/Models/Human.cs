@@ -35,11 +35,10 @@ namespace Academy.Models
 			this.phone = phone;
 			this.photo = photo;
 		}
-		public 
-			Human(Human other)
+		public Human(Human other)
 		{
-            this.id = other.id;
-            this.last_name = other.last_name;
+			this.id = other.id;
+			this.last_name = other.last_name;
 			this.first_name = other.first_name;
 			this.middle_name = other.middle_name;
 			this.birth_date = other.birth_date;
@@ -74,7 +73,7 @@ namespace Academy.Models
 		}
 		public virtual string GetCondition()
 		{
-			return $"last_name=N'{last_name}' AND first_name=N'{first_name}' AND middle_name=N'{middle_name}' AND birth_date=N'{birth_date}' AND email=N'{email}' AND phone=N'{phone}'";
+			return $" last_name=N'{last_name}' AND first_name=N'{first_name}' AND middle_name=N'{middle_name}' AND birth_date=N'{birth_date}' AND email=N'{email}' AND phone=N'{phone}'";
 		}
 	}
 }

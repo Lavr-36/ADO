@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using System.Configuration;
 
 namespace Academy
 {
@@ -25,8 +25,8 @@ namespace Academy
 		{
 			if (human != null)
 			{
-                if (human.id != 0) labelID.Text = $"ID:{human.id}";
-                tbLastName.Text = human.last_name;
+				if (human.id != 0) labelID.Text = $"ID:{human.id}";
+				tbLastName.Text = human.last_name;
 				tbFirstName.Text = human.first_name;
 				tbMiddleName.Text = human.middle_name;
 				dtpBirthDate.Value = Convert.ToDateTime(human.birth_date);
@@ -35,13 +35,12 @@ namespace Academy
 			}
 		}
 
-
 		protected virtual void buttonOK_Click(object sender, EventArgs e)
 		{
 			human = new Models.Human
 				(
-                labelID.Text == "" ? 6 : Convert.ToInt32(labelID.Text.Split(':').Last()),
-                tbLastName.Text,
+				labelID.Text=="" ? 0 : Convert.ToInt32(labelID.Text.Split(':').Last()),
+				tbLastName.Text,
 				tbFirstName.Text,
 				tbMiddleName.Text,
 				dtpBirthDate.Value.ToString("yyyy-MM-dd"),
@@ -49,6 +48,15 @@ namespace Academy
 				tbPhone.Text,
 				pbPhoto.Image
 				);
+		}
+
+		private void buttonBrowse_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Filter = 
+				"JPG files (*.jpg)|*.jpg|PNG files (*.png)|*.png|All image files|*.png;*.jpg|All files (*.*)|*.*";
+			if (dialog.ShowDialog() == DialogResult.OK)
+				pbPhoto.Image = Image.FromFile(dialog.FileName);
 		}
 	}
 }
