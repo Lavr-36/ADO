@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Academy/Academy.csproj" Id="6da88edc-1f26-44ad-8fcf-b8d1d30d0ffa" />
+  <Project Path="AcademyWPF/AcademyWPF.csproj" Id="a96cff26-39fb-419e-9b64-76c0f4b79fc5" />
   <Project Path="ADO/ADO.csproj" Id="64ed9bf1-8892-488d-bd03-bb450104e89b" />
   <Project Path="DBTools/DBTools.csproj" Id="7cd38bc4-4d3e-4ea3-99b5-cea25ebc03f5" />
   <Project Path="DLLtest/DLLtest.csproj" Id="352db65d-6718-4a0f-adc8-3e53c461b947" />
